@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title> Food Drive</title>
+<script src="http://maps.google.com/maps/api/js?sensor=false" 
+          type="text/javascript"></script>
+
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/modern-business.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    
+               
+                 
+                       
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Marketing Icons Section -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                  <center> Food Drives in the Area </center>
+                </h1>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4><i class="fa fa-database"></i> Move for Hunger </h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>Move for Hunger is a non-profit organization that offers to pick up unwanted, non-perishable food items from those who are moving and deliver it to their local food banks. Working across 60 states, Move for Hunger has delivered over 6,029,990 pounds of food across North America. Help this organization but hosting a drive at your school.</p>
+                        <a href="https://moveforhunger.org/get-involved/food-drive/" class="btn btn-default">Host a Drive!</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4><i class="fa fa-database"></i> Second Harvest Food Bank</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>Based in Silicon Valley, Second Harvest is one of the largest food banks in the nation. Every month, Second Harvest provides more than one quarter of a million people with nutritious food and fresh produce. In one year, more than one million pounds of nutritious food each week was provided to low-income people in need in every zip code. This would not be possible without the 1,500 volunteers fundraisers who collect food and raise money.</p>
+                        <a href="http://www.shfb.org/ffdregisteronline" class="btn btn-default">Host a Drive!</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4><i class="fa fa-database"></i> SF-Marin Food Bank & Fund Drives</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+Thanks to our thousands of donors and volunteers, 47 million pounds of food have been delivered throughout San Francisco and Marin. Start a drive now and start filling up your food collection barrel. All food donated goes directly into the community. By hosting a fund drive you can raise money that would will directly support the program. For every $1 donated, the food bank is able to distribute $5 worth of food.</p>
+                        <a href="https://fooddrives.sfmfoodbank.org/user/register" class="btn btn-default">Host a Drive!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <div id="map" ></div>
+	<style>
+	 #map {
+	  position: absolute;
+	  width: 1000px;
+	  height: 500px;
+	  z-index: 15;
+	  top: 90%;
+	  left: 25%;
+	  margin: -100px 0 0 -150px;
+	  background: red;
+	}
+
+	</style>
+
+  <script type="text/javascript">
+    var locations = [
+      ['Second Harvest Food Bank',37.291755, -121.877218],
+      ['Move For Hunger', 37.317403, -121.885036],
+      ['SF-Marin Food Bank & Funds', 38.071948, -122.530538],
+    ];
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat:37.6879, lng:-122.4702},
+          zoom: 6
+        });
+
+    var infowindow = new google.maps.InfoWindow({
+		content: "Second Harvest Food Bank"
+	});
+ 
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+	
+			        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+      }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJoPcYxoD1TRYcxJtcbjCTXfP8mOx-BN8&callback=initMap">
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJoPcYxoD1TRYcxJtcbjCTXfP8mOx-BN8&callback=initMap">
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</br>
+    <!-- Script to Activate the Carousel -->
+    
+</body>
+
+</html>
